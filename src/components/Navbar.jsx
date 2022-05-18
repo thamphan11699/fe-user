@@ -106,7 +106,7 @@ const Navbar = () => {
         </Left>
         <Center>
           <Link to="/">
-            <Logo>TQANH.</Logo>
+            <Logo>COCCACH</Logo>
           </Link>
         </Center>
         <Right>

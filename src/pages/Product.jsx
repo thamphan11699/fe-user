@@ -289,7 +289,7 @@ const Product = () => {
               <FilterTitle>Size</FilterTitle>
               <FilterSize
                 value={size}
-                defaultValue={size}
+                defaultValue={size || productChild.size}
                 onChange={(event) => handleChangeSize(event)}
               >
                 {listSize.length > 0 &&

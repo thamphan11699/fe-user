@@ -7,20 +7,8 @@ import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import Products from "../components/Products";
 import Slider from "../components/Slider";
-import styled from "styled-components";
-import { mobile } from "../responsive";
 import News from "../components/News";
 import AlertDialog from "../components/AlertDialog";
-
-const Wrapper = styled.div`
-  padding: 50px;
-  display: flex;
-  ${mobile({ padding: "10px", flexDirection: "column" })}
-`;
-
-const Title = styled.h1`
-  font-weight: 300;
-`;
 
 const Home = () => {
   const [listProduct, setListProduct] = useState([]);
@@ -46,21 +34,11 @@ const Home = () => {
       <Announcement />
       <Navbar />
       <Slider />
-      <Wrapper style={{ padding: 20 }}>
-        <Title style={{ textDecorationLine: "underline" }}>
-          DANH MỤC SẢN PHẨM
-        </Title>
-      </Wrapper>
       <Categories />
-      <Wrapper style={{ padding: 20 }}>
-        <Title style={{ textDecorationLine: "underline" }}>
-          DANH SÁCH SẢN PHẨM
-        </Title>
-      </Wrapper>
       <Products products={listProduct} />
-      <Wrapper style={{ padding: 20 }}>
+      {/* <Wrapper style={{ padding: 20 }}>
         <Title style={{ textDecorationLine: "underline" }}>TIN TỨC</Title>
-      </Wrapper>
+      </Wrapper> */}
       <News />
       <Newsletter />
       <Footer />
