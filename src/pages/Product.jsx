@@ -158,9 +158,9 @@ const Product = () => {
         setProduct(data);
         setListChild(data.children);
         setProductChild(data.children[0]);
-        setListColor(data.children.map((item) => item.color));
+        setListColor([...new Set(data.children.map((item) => item.color))]);
         setListSize([...new Set(data.children.map((item) => item.size))]);
-        setSize(data.children[0].size);
+
         setColor(data.children[0].color);
 
         axios
@@ -175,25 +175,28 @@ const Product = () => {
       });
   }, [id]);
 
-  const handleChangeColor = (color) => {
-    // console.log(color);
+  useEffect(() => {
+    if (productChild?.id) {
+      setSize(productChild.size);
+    }
+  }, [productChild]);
+
+  const handleChangeColor = async (color) => {
     setColor(color);
-    filterProductChild();
+    await filterProductChild(color, size);
     setAmount(0);
   };
 
-  const filterProductChild = () => {
-    setProductChild(
-      listChild.find(
-        (item, index) => item?.color.id === color.id && item.size === size
-      )
+  const filterProductChild = async (colors, size1) => {
+    let pr = listChild.find(
+      (item) => item.color.id === colors.id && item.size === size1
     );
+    setProductChild(pr ? pr : null);
   };
 
-  const handleChangeSize = (event) => {
-    // console.log(event.target.value);
+  const handleChangeSize = async (event) => {
     setSize(event.target.value);
-    filterProductChild();
+    await filterProductChild(color, event.target.value);
     setAmount(0);
   };
 
@@ -289,7 +292,7 @@ const Product = () => {
               <FilterTitle>Size</FilterTitle>
               <FilterSize
                 value={size}
-                defaultValue={size || productChild.size}
+                // defaultValue={size || productChild.size}
                 onChange={(event) => handleChangeSize(event)}
               >
                 {listSize.length > 0 &&
