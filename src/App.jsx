@@ -19,15 +19,21 @@ const App = () => {
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${localStorage.getItem("token")}`;
-      axios.get("http://127.0.0.1:8089/api/user/me").then(({ data }) => {
-        // console.log(data);
-        dispatch(getUser(data));
-        axios
-          .get(`http://127.0.0.1:8089/public/api/cart/${data.id}`)
-          .then((res) => {
-            dispatch(getCartByUser(res.data));
-          });
-      });
+      axios
+        .get("http://127.0.0.1:8089/api/user/me")
+        .then(({ data }) => {
+          // console.log(data);
+          dispatch(getUser(data));
+          axios
+            .get(`http://127.0.0.1:8089/public/api/cart/${data.id}`)
+            .then((res) => {
+              dispatch(getCartByUser(res.data));
+            });
+        })
+        .catch((err) => {
+          localStorage.removeItem("token");
+          delete axios.defaults.headers.common["Authorization"];
+        });
     } else {
       delete axios.defaults.headers.common["Authorization"];
     }

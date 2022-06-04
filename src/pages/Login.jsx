@@ -80,6 +80,9 @@ const Login = () => {
             });
         });
         navigate("/");
+      })
+      .catch((err) => {
+        alert("Đăng nhập không thành công, vui lòng thử lại");
       });
   };
   return (

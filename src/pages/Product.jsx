@@ -111,6 +111,18 @@ const Amount = styled.span`
   margin: 0px 5px;
 `;
 
+const AmountInput = styled.input`
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  border: 1px solid teal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
+  text-align: center;
+`;
+
 const Button = styled.button`
   padding: 15px;
   border: 2px solid teal;
@@ -156,9 +168,9 @@ const Product = () => {
       .get(`http://127.0.0.1:8089/public/api/product/${id}`)
       .then(({ data }) => {
         setProduct(data);
-        setListChild(data.children);
+        setListChild(filterItem(data.children));
         setProductChild(data.children[0]);
-        setListColor([...new Set(data.children.map((item) => item.color))]);
+        setListColor(filterColor(data.children.map((item) => item.color)));
         setListSize([...new Set(data.children.map((item) => item.size))]);
 
         setColor(data.children[0].color);
@@ -175,11 +187,30 @@ const Product = () => {
       });
   }, [id]);
 
+  const filterColor = (arr) => {
+    return [...new Map(arr.map((item) => [item["id"], item])).values()];
+  };
+
+  const filterItem = (arr) => {
+    let newArr = [];
+    arr.forEach((item) => {
+      if (item.deleted !== true) {
+        newArr.push(item);
+      }
+    });
+    return newArr;
+  };
+
   useEffect(() => {
     if (productChild?.id) {
       setSize(productChild.size);
     }
   }, [productChild]);
+
+  useEffect(() => {
+    console.log(listChild);
+    setProductChild(listChild[0]);
+  }, [listChild]);
 
   const handleChangeColor = async (color) => {
     setColor(color);
@@ -188,6 +219,7 @@ const Product = () => {
   };
 
   const filterProductChild = async (colors, size1) => {
+    console.log(listChild);
     let pr = listChild.find(
       (item) => item.color.id === colors.id && item.size === size1
     );
@@ -205,6 +237,14 @@ const Product = () => {
       ? "VND " +
           value.toLocaleString("vi", { style: "currency", currency: "VND" })
       : "Hết hàng";
+  };
+
+  const handleChangeAmount = (event) => {
+    if (event.target.value > productChild.quantity) {
+      toast.error("Sản phẩm không trong kho không đủ! ");
+      return;
+    }
+    setAmount(event.target.value);
   };
 
   const handleAddToCart = () => {
@@ -320,7 +360,7 @@ const Product = () => {
               >
                 <Remove />
               </IconButton>
-              <Amount>{amount}</Amount>
+              <AmountInput value={amount} onChange={handleChangeAmount} />
               <IconButton
                 disabled={
                   productChild == null ||

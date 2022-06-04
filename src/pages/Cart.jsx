@@ -11,6 +11,7 @@ import Navbar from "../components/Navbar";
 import { openAlertDialog } from "../redux/authSlice";
 import { getCartByUser } from "../redux/cartSlice";
 import { mobile } from "../responsive";
+import toast, { Toaster } from "react-hot-toast";
 
 const Container = styled.div``;
 
@@ -109,10 +110,12 @@ const ProductAmountContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const ProductAmount = styled.div`
+const ProductAmount = styled.input`
   font-size: 24px;
   margin: 5px;
   ${mobile({ margin: "5px 15px" })}
+  text-align: center;
+  width: 100px;
 `;
 
 const ProductPrice = styled.div`
@@ -217,15 +220,38 @@ const Cart = () => {
       });
   };
 
+  const handleChangeAmount = (event, item) => {
+    let item1 = { ...item, amount: event.target.value };
+    if (item1.amount > item.product.quantity) {
+      toast.error("Sản phẩm không đủ");
+      return;
+    }
+    if (item1.amount === 1) {
+      toast.error("Sản phẩm không được bé hơn 1");
+      return;
+    }
+    axios
+      .post(
+        `http://127.0.0.1:8089/public/api/cart/typing-amount/${cart.id}`,
+        item1
+      )
+      .then(({ data }) => {
+        dispatch(getCartByUser(data));
+      });
+  };
+
   return (
     <Container>
+      <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
       <Announcement />
       <Wrapper style={{ marginBottom: 100 }}>
         <Title>GIỎ HÀNG CỦA BẠN</Title>
         <Top>
           <TopButton>
-            <Link to="/product">TIẾP TỤC MUA SẮM</Link>
+            <Link to="/product" style={{ textDecoration: "none" }}>
+              TIẾP TỤC MUA SẮM
+            </Link>
           </TopButton>
           <TopTexts>
             <TopText>SẢN PHẨM{" " + cart.countProduct}</TopText>
@@ -262,15 +288,27 @@ const Cart = () => {
                     </ProductDetail>
                     <PriceDetail>
                       <ProductAmountContainer>
-                        <IconButton onClick={() => addAmount(item)}>
-                          <Add />
+                        <IconButton
+                          onClick={() => removeAmount(item)}
+                          disabled={item.amount === 1 ? true : false}
+                        >
+                          <Remove color="primary" />
                         </IconButton>
-                        <ProductAmount>{item?.amount}</ProductAmount>
-                        <IconButton onClick={() => removeAmount(item)}>
-                          <Remove />
+                        <ProductAmount
+                          type="number"
+                          value={item?.amount ? item.amount : 1}
+                          onChange={(event) => handleChangeAmount(event, item)}
+                        />
+                        <IconButton
+                          onClick={() => addAmount(item)}
+                          disabled={
+                            item.amount >= item.product.quantity ? true : false
+                          }
+                        >
+                          <Add color="primary" />
                         </IconButton>
                         <IconButton onClick={() => deleteProduct(item)}>
-                          <Delete />
+                          <Delete color="secondary" />
                         </IconButton>
                       </ProductAmountContainer>
                       <ProductPrice>
@@ -295,13 +333,13 @@ const Cart = () => {
               <SummaryItemPrice>{formatVND(cart.subtotal)}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
-              <SummaryItemText>Phí vận chuyển</SummaryItemText>
-              <SummaryItemPrice>{formatVND("50000")}</SummaryItemPrice>
+              <SummaryItemText>Phương thức thanh toán</SummaryItemText>
+              <SummaryItemPrice>Thanh toan khi nhận hàng</SummaryItemPrice>
             </SummaryItem>
-            <SummaryItem>
+            {/* <SummaryItem>
               <SummaryItemText>Khuyến mãi</SummaryItemText>
               <SummaryItemPrice>{formatVND("50000")}</SummaryItemPrice>
-            </SummaryItem>
+            </SummaryItem> */}
             <SummaryItem type="total">
               <SummaryItemText>Thành tiền</SummaryItemText>
               <SummaryItemPrice>{formatVND(cart.subtotal)}</SummaryItemPrice>

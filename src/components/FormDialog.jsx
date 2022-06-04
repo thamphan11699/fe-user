@@ -27,7 +27,12 @@ export default function FormDialog() {
         aria-labelledby="form-dialog-title"
         maxWidth="md"
       >
-        <DialogTitle id="form-dialog-title">Thông tin người dùng</DialogTitle>
+        <DialogTitle
+          id="form-dialog-title"
+          style={{ background: "#757ce8", color: "white" }}
+        >
+          Thông tin người dùng
+        </DialogTitle>
         <DialogContent>
           <Grid container spacing={3}>
             <Grid item md={12} xs={12}>

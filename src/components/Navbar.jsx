@@ -105,7 +105,7 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Link to="/">
+          <Link to="/" style={{ textDecoration: "none" }}>
             <Logo>COCCACH</Logo>
           </Link>
         </Center>
