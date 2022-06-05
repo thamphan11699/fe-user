@@ -1,4 +1,4 @@
-import { SearchOutlined, ShoppingCartOutlined } from "@material-ui/icons";
+import { SearchOutlined } from "@material-ui/icons";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -78,9 +78,9 @@ const Product = ({ item }) => {
         />
         <div style={{ position: "absolute", bottom: 10 }}>{item.name}</div>
         <Info>
-          <Icon>
+          {/* <Icon>
             <ShoppingCartOutlined />
-          </Icon>
+          </Icon> */}
           <Icon>
             <Link to={`/product/${item.id}`}>
               <SearchOutlined />

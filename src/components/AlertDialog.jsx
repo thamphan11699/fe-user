@@ -36,7 +36,7 @@ export default function AlertDialog({ content, title }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button variant="contained" onClick={handleClose} color="primary" autoFocus>
             OK
           </Button>
         </DialogActions>

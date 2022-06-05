@@ -2,6 +2,7 @@ import { IconButton, Tooltip } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -10,9 +11,8 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import Products from "../components/Products";
-import { mobile } from "../responsive";
 import { addToCart } from "../redux/cartSlice";
-import toast, { Toaster } from "react-hot-toast";
+import { mobile } from "../responsive";
 
 const Container = styled.div``;
 
