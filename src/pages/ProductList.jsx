@@ -111,7 +111,7 @@ const ProductList = () => {
             <Option>XL</Option>
           </Select> */}
         </Filter>
-        <Filter>
+        {/* <Filter>
           <FilterText>Sort Products:</FilterText>
           <Select defaultValue={"new"}>
             <Option value={"new"} selected>
@@ -120,7 +120,7 @@ const ProductList = () => {
             <Option value={"asc"}>Price (asc)</Option>
             <Option value={"des"}>Price (desc)</Option>
           </Select>
-        </Filter>
+        </Filter> */}
       </FilterContainer>
       <Products products={listProduct} />
       <Newsletter />

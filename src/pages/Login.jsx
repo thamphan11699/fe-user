@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import { getUser, login } from "../redux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { getCartByUser } from "../redux/cartSlice";
+import { getCartByUser, getOrder } from "../redux/cartSlice";
 
 const Container = styled.div`
   width: 100vw;
@@ -77,6 +77,11 @@ const Login = () => {
             .get(`http://127.0.0.1:8089/public/api/cart/${data.id}`)
             .then((res) => {
               dispatch(getCartByUser(res.data));
+            });
+          axios
+            .get(`http://127.0.0.1:8089/api/order/get-by-user/${data.id}`)
+            .then((res) => {
+              dispatch(getOrder(res.data));
             });
         });
         navigate("/");

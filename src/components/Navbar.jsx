@@ -3,7 +3,7 @@ import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import { MenuItem as MenuItemM, Menu as MenuM, Fade } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import Avatar from "@material-ui/core/Avatar";
@@ -78,6 +78,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -129,11 +130,11 @@ const Navbar = () => {
               </Link>
             </MenuItem>
           )}
-          {user && (
+          {user != null && (
             <MenuItem>
               <Avatar
-                alt="Remy Sharp"
-                src="https://sohanews.sohacdn.com/2019/9/3/photo-1-15674713690051885929813.jpg"
+                alt={user?.username}
+                src={user?.avatar}
                 onClick={handleClick}
               />
               <MenuM
@@ -146,6 +147,13 @@ const Navbar = () => {
               >
                 <MenuItemM onClick={handleOpenUserDialog}>
                   Thông tin người dùng
+                </MenuItemM>
+                <MenuItemM
+                  onClick={() => {
+                    navigate(`/order`);
+                  }}
+                >
+                  Đơn hàng của tôi
                 </MenuItemM>
                 <MenuItemM onClick={handleLogout}>Logout</MenuItemM>
               </MenuM>

@@ -1,7 +1,7 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, TextField } from "@material-ui/core";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { openAlertDialog } from "../redux/authSlice";
-import { getCartByUser } from "../redux/cartSlice";
+import { getCartByUser, getOrder } from "../redux/cartSlice";
 import { mobile } from "../responsive";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -135,7 +135,7 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
-  height: 50vh;
+  height: 70vh;
 `;
 
 const SummaryTitle = styled.h1`
@@ -167,6 +167,8 @@ const Cart = () => {
 
   const user = useSelector((state) => state.auth.user);
 
+  const [desc, setDesc] = useState();
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -179,15 +181,22 @@ const Cart = () => {
   };
 
   const handleOrder = () => {
-    axios.post("http://127.0.0.1:8089/api/order", cart).then(({ data }) => {
-      dispatch(openAlertDialog());
-      navigate("/");
-      axios
-        .get(`http://127.0.0.1:8089/public/api/cart/${user.id}`)
-        .then((res) => {
-          dispatch(getCartByUser(res.data));
-        });
-    });
+    axios
+      .post("http://127.0.0.1:8089/api/order", { ...cart, description: desc })
+      .then(({ data }) => {
+        dispatch(openAlertDialog());
+        navigate("/");
+        axios
+          .get(`http://127.0.0.1:8089/public/api/cart/${user.id}`)
+          .then((res) => {
+            dispatch(getCartByUser(res.data));
+          });
+        axios
+          .get(`http://127.0.0.1:8089/api/order/get-by-user/${user.id}`)
+          .then((res) => {
+            dispatch(getOrder(res.data));
+          });
+      });
   };
 
   const addAmount = (item) => {
@@ -257,7 +266,14 @@ const Cart = () => {
             <TopText>SẢN PHẨM{" " + cart.countProduct}</TopText>
             {/* <TopText>Your Wishlist (0)</TopText> */}
           </TopTexts>
-          <TopButton type="filled">ĐƠN HÀNG CỦA TÔI</TopButton>
+          <TopButton
+            onClick={() => {
+              navigate("/order");
+            }}
+            type="filled"
+          >
+            ĐƠN HÀNG CỦA TÔI
+          </TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -322,7 +338,10 @@ const Cart = () => {
             ) : (
               <h1>
                 KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG :{" "}
-                <Link to="/product"> {" Mua Ngay"}</Link>
+                <Link to="/product" style={{ textDecoration: "none" }}>
+                  {" "}
+                  {" Mua Ngay"}
+                </Link>
               </h1>
             )}
           </Info>
@@ -344,6 +363,19 @@ const Cart = () => {
               <SummaryItemText>Thành tiền</SummaryItemText>
               <SummaryItemPrice>{formatVND(cart.subtotal)}</SummaryItemPrice>
             </SummaryItem>
+            <TextField
+              placeholder="Địa chỉ chi tiết"
+              margin="dense"
+              variant="outlined"
+              fullWidth
+              type="text"
+              size="small"
+              maxRows={5}
+              minRows={2}
+              multiline
+              value={desc}
+              onChange={(event) => setDesc(event.target.value)}
+            />
             <Button
               onClick={handleOrder}
               style={{ cursor: "pointer" }}

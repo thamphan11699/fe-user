@@ -24,7 +24,12 @@ export default function AlertDialog({ content, title }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{ background: "#757ce8", color: "white" }}
+        >
+          {title}
+        </DialogTitle>
         <DialogContent dividers>
           <DialogContentText id="alert-dialog-description">
             {content}

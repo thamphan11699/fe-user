@@ -8,6 +8,7 @@ export const cartSlice = createSlice({
     subtotal: 0,
     user: null,
     cartProducts: [],
+    order: [],
   },
   reducers: {
     getCartByUser: (state, action) => {
@@ -61,10 +62,14 @@ export const cartSlice = createSlice({
       state.user = null;
       state.cartProducts = [];
     },
+    getOrder: (state, action) => {
+      state.order = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { getCartByUser, addToCart, removeToCart } = cartSlice.actions;
+export const { getCartByUser, addToCart, removeToCart, getOrder } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

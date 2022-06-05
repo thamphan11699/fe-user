@@ -6,11 +6,12 @@ import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import News from "./pages/News";
+import Order from "./pages/Order";
 import Product from "./pages/Product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import { getUser } from "./redux/authSlice";
-import { getCartByUser } from "./redux/cartSlice";
+import { getCartByUser, getOrder } from "./redux/cartSlice";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,11 @@ const App = () => {
             .then((res) => {
               dispatch(getCartByUser(res.data));
             });
+          axios
+            .get(`http://127.0.0.1:8089/api/order/get-by-user/${data.id}`)
+            .then((res) => {
+              dispatch(getOrder(res.data));
+            });
         })
         .catch((err) => {
           localStorage.removeItem("token");
@@ -41,6 +47,7 @@ const App = () => {
 
   return (
     <Routes>
+      <Route path="/order" element={<Order />} />
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
