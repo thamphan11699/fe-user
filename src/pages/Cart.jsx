@@ -164,6 +164,7 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  console.log(cart);
 
   const user = useSelector((state) => state.auth.user);
 
@@ -328,7 +329,9 @@ const Cart = () => {
                         </IconButton>
                       </ProductAmountContainer>
                       <ProductPrice>
-                        {formatVND(item.product?.price)}
+                        {item.product.quantity < item.amount
+                          ? "Sô lượng sản phẩm không đủ"
+                          : formatVND(item.product?.price)}
                       </ProductPrice>
                     </PriceDetail>
                   </Product>

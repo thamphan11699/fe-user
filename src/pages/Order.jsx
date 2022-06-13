@@ -57,6 +57,7 @@ export default function Order() {
   const cart = useSelector((state) => state.cart);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [item, setItem] = useState({});
   const navigate = useNavigate();
 
   const handleClose = () => {
@@ -89,6 +90,7 @@ export default function Order() {
   const hadnleCellClick = (item) => {
     setData(item.orderProducts);
     setOpen(true);
+    setItem(item);
   };
 
   return (
@@ -133,7 +135,12 @@ export default function Order() {
           </div>
         </Bottom>
       </Wrapper>
-      <OrderDialog open={open} handleClose={handleClose} data={data} />
+      <OrderDialog
+        open={open}
+        handleClose={handleClose}
+        data={data}
+        order={item}
+      />
       <Footer />
     </Container>
   );

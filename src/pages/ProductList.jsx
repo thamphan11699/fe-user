@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import Navbar from "../components/Navbar";
-import Announcement from "../components/Announcement";
-import Products from "../components/Products";
-import Newsletter from "../components/Newsletter";
-import Footer from "../components/Footer";
-import { mobile } from "../responsive";
-import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
+import styled from "styled-components";
+import Announcement from "../components/Announcement";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import Newsletter from "../components/Newsletter";
+import Products from "../components/Products";
+import { mobile } from "../responsive";
 
 const Container = styled.div``;
 
