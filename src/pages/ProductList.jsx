@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -43,6 +44,10 @@ const ProductList = () => {
     id: null,
   });
 
+  const [searchParams] = useSearchParams();
+
+  const text = searchParams.get("text") || "";
+
   const [listCategory, setListCategory] = useState([]);
 
   const [listProduct, setListProduct] = useState([]);
@@ -58,12 +63,13 @@ const ProductList = () => {
         axios
           .post("http://127.0.0.1:8089/public/api/product/all", {
             category: { id: null },
+            text: text,
           })
           .then(({ data }) => {
             setListProduct(data);
           });
       });
-  }, []);
+  }, [text]);
 
   const handleChangeCategory = (event) => {
     setCategory({ id: Number.parseFloat(event.target.value) });

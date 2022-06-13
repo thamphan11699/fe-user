@@ -2,6 +2,7 @@ import { IconButton, TextField } from "@material-ui/core";
 import { Add, Delete, Remove } from "@material-ui/icons";
 import axios from "axios";
 import { Fragment, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -11,7 +12,6 @@ import Navbar from "../components/Navbar";
 import { openAlertDialog } from "../redux/authSlice";
 import { getCartByUser, getOrder } from "../redux/cartSlice";
 import { mobile } from "../responsive";
-import toast, { Toaster } from "react-hot-toast";
 
 const Container = styled.div``;
 
@@ -164,7 +164,6 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
 
   const user = useSelector((state) => state.auth.user);
 

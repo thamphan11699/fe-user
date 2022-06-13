@@ -77,6 +77,7 @@ const Navbar = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [text, setText] = React.useState("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event) => {
@@ -94,6 +95,17 @@ const Navbar = () => {
   const handleOpenUserDialog = () => {
     dispatch(openUserDialog());
   };
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSearch = (event) => {
+    if (event.key === "Enter") {
+      navigate("/product/?text=" + text);
+    }
+  };
+
   return (
     <Container>
       <FormDialog />
@@ -101,7 +113,11 @@ const Navbar = () => {
         <Left>
           <Language>EN</Language>
           <SearchContainer>
-            <Input placeholder="Search" />
+            <Input
+              placeholder="Search"
+              onChange={(event) => handleChange(event)}
+              onKeyPress={(event) => handleSearch(event)}
+            />
             <Search style={{ color: "gray", fontSize: 16 }} />
           </SearchContainer>
         </Left>
